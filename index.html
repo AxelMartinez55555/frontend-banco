@@ -32,29 +32,29 @@
             
             <div class="mb-5">
                 <label class="block text-sm font-bold mb-2 text-gray-700">RFC</label>
-                <input type="text" placeholder="Ej. GARC900101ABC" class="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-dark">
+                <input id="input-rfc" type="text" placeholder="Ej. GARC900101ABC" class="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-dark">
             </div>
             <div class="mb-8">
                 <label class="block text-sm font-bold mb-2 text-gray-700">Contraseña</label>
-                <input type="password" placeholder="Ingresa tu contraseña" class="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-dark">
+                <input id="input-pwd" type="password" placeholder="Ingresa tu contraseña" class="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-dark">
             </div>
-            <button onclick="navigate('view-dashboard')" class="w-full bg-brand-dark text-white p-4 rounded-xl font-bold hover:opacity-90 transition">Ingresar a mi cuenta ></button>
+            <button onclick="hacerLogin()" class="w-full bg-brand-dark text-white p-4 rounded-xl font-bold hover:opacity-90 transition">Ingresar a mi cuenta ></button>
         </div>
     </div>
 
     <!-- Vista 2: Dashboard -->
     <div id="view-dashboard" class="hidden w-full max-w-4xl">
-        <p class="text-gray-500 text-sm mb-1">Miércoles, 21 de mayo</p>
-        <h2 class="text-3xl font-bold mb-6">Hola, María</h2>
+        <p class="text-gray-500 text-sm mb-1" id="fecha-actual">Miércoles, 21 de mayo</p>
+        <h2 id="lbl-nombre" class="text-3xl font-bold mb-6">Hola, Usuario</h2>
         
         <div class="bg-brand-dark text-white p-8 md:p-10 rounded-3xl mb-6 flex flex-col md:flex-row justify-between md:items-end relative overflow-hidden shadow-lg">
             <div class="relative z-10 mb-6 md:mb-0">
                 <p class="text-sm font-semibold opacity-80 mb-4 flex items-center gap-2">✓ Cuenta de ahorro</p>
                 <p class="text-xs tracking-widest opacity-80 mb-2">SALDO DISPONIBLE</p>
-                <p class="text-5xl md:text-6xl font-bold mb-2">$5,000.00</p>
+                <p id="lbl-saldo-dash" class="text-5xl md:text-6xl font-bold mb-2">$0.00</p>
                 <p class="text-xs opacity-60">Última actualización: ahora</p>
             </div>
-            <button onclick="navigate('view-withdraw')" class="relative z-10 bg-brand-orange text-brand-dark px-8 py-4 rounded-xl font-bold hover:opacity-90 transition">Retirar fondos ></button>
+            <button onclick="irARetiro()" class="relative z-10 bg-brand-orange text-brand-dark px-8 py-4 rounded-xl font-bold hover:opacity-90 transition">Retirar fondos ></button>
         </div>
     </div>
 
@@ -66,24 +66,20 @@
         
         <div class="bg-[#f6f5ef] p-4 rounded-xl mb-8 flex justify-between items-center text-sm">
             <span class="text-gray-500">Saldo disponible</span>
-            <span class="font-bold">$5,000.00</span>
+            <span id="lbl-saldo-ret" class="font-bold">$0.00</span>
         </div>
         
         <div class="mb-8">
             <label class="block text-sm font-bold mb-2 text-brand-dark">Monto a retirar</label>
             <div class="relative">
                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-xl font-bold text-gray-500">$</span>
-                <input type="number" value="800" class="w-full p-4 pl-8 border-2 border-brand-dark rounded-xl text-xl font-bold focus:outline-none">
+                <input id="input-monto" type="number" placeholder="0" class="w-full p-4 pl-8 border-2 border-brand-dark rounded-xl text-xl font-bold focus:outline-none">
                 <span class="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-gray-400">MXN</span>
             </div>
         </div>
 
-        <div class="border-t border-gray-100 pt-6 mb-8 text-sm">
-            <div class="flex justify-between mb-3"><span class="text-gray-500">Monto del retiro</span><span class="font-bold text-brand-dark">$800.00</span></div>
-            <div class="flex justify-between"><span class="text-gray-500">Saldo después del retiro</span><span class="font-bold text-brand-dark">$4,200.00</span></div>
-        </div>
-
-        <button onclick="navigate('view-success')" class="w-full bg-brand-dark text-white p-4 rounded-xl font-bold hover:opacity-90 transition">Confirmar retiro</button>
+        <button onclick="hacerRetiro()" class="w-full bg-brand-dark text-white p-4 rounded-xl font-bold hover:opacity-90 transition">Confirmar retiro</button>
+        <button onclick="cargarDashboard()" class="w-full mt-4 text-gray-500 text-sm font-bold hover:underline">Cancelar</button>
     </div>
 
     <!-- Vista 4: Éxito -->
@@ -92,24 +88,112 @@
             <div class="w-16 h-16 bg-brand-orange rounded-full flex items-center justify-center mx-auto mb-6 text-brand-dark text-2xl font-bold">✓</div>
             <p class="text-xs font-bold tracking-widest mb-2 opacity-80">OPERACIÓN COMPLETADA</p>
             <h2 class="text-4xl font-bold mb-4">Retiro exitoso</h2>
-            <p class="opacity-80 font-light">Retiraste $800.00 de tu cuenta.</p>
+            <p id="lbl-monto-exito" class="opacity-80 font-light">Retiraste $0.00 de tu cuenta.</p>
         </div>
         <div class="bg-white p-10">
             <div class="bg-[#f6f5ef] p-6 rounded-2xl text-center mb-8 border border-gray-100">
                 <p class="text-xs font-bold text-gray-400 tracking-widest mb-2">SALDO ACTUALIZADO</p>
-                <p class="text-4xl font-bold text-brand-dark">$4,200.00</p>
+                <p id="lbl-saldo-exito" class="text-4xl font-bold text-brand-dark">$0.00</p>
             </div>
-            <button onclick="navigate('view-dashboard')" class="w-full bg-brand-dark text-white p-4 rounded-xl font-bold hover:opacity-90 transition">Volver a mi cuenta ></button>
-            <p class="text-center text-xs text-gray-400 mt-6">Folio de operación: BN-0521-839204</p>
+            <button onclick="cargarDashboard()" class="w-full bg-brand-dark text-white p-4 rounded-xl font-bold hover:opacity-90 transition">Volver a mi cuenta ></button>
         </div>
     </div>
 
     <script>
+        let rfcUsuarioActual = "";
+        let saldoUsuarioActual = 0;
+
+        // Función base para cambiar de pantallas
         function navigate(targetId) {
-            document.querySelectorAll('body > div').forEach(el => {
-                el.classList.add('hidden');
-            });
+            document.querySelectorAll('body > div').forEach(el => el.classList.add('hidden'));
             document.getElementById(targetId).classList.remove('hidden');
+        }
+
+        // 1. Enviar RFC y Contraseña a Java
+        async function hacerLogin() {
+            const rfc = document.getElementById('input-rfc').value;
+            const pwd = document.getElementById('input-pwd').value;
+
+            if (!rfc || !pwd) {
+                alert("Por favor ingresa tu RFC y contraseña.");
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:8080/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ rfc: rfc, password: pwd })
+                });
+                const data = await response.json();
+                
+                if (data.exito) {
+                    rfcUsuarioActual = rfc;
+                    cargarDashboard();
+                } else {
+                    alert(data.mensaje); // "RFC o contraseña incorrectos"
+                }
+            } catch (error) {
+                alert("Error de conexión. Revisa que tu servidor Spring Boot esté encendido.");
+            }
+        }
+
+        // 2. Traer los datos reales del usuario desde Java
+        async function cargarDashboard() {
+            try {
+                const response = await fetch(`http://localhost:8080/api/usuario/${rfcUsuarioActual}`);
+                const data = await response.json();
+
+                if (data.exito) {
+                    saldoUsuarioActual = parseFloat(data.saldo);
+                    
+                    // Actualizar los textos en pantalla
+                    document.getElementById('lbl-nombre').innerText = `Hola, ${data.nombre}`;
+                    document.getElementById('lbl-saldo-dash').innerText = `$${saldoUsuarioActual.toFixed(2)}`;
+                    
+                    navigate('view-dashboard');
+                }
+            } catch (error) {
+                console.error("Error al cargar datos:", error);
+            }
+        }
+
+        // 3. Preparar la pantalla de retiro
+        function irARetiro() {
+            document.getElementById('lbl-saldo-ret').innerText = `$${saldoUsuarioActual.toFixed(2)}`;
+            document.getElementById('input-monto').value = ""; // Limpiar input
+            navigate('view-withdraw');
+        }
+
+        // 4. Mandar la instrucción matemática a Java
+        async function hacerRetiro() {
+            const monto = parseFloat(document.getElementById('input-monto').value);
+
+            if (isNaN(monto) || monto <= 0) {
+                alert("Ingresa un monto válido.");
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:8080/api/retirar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ rfc: rfcUsuarioActual, monto: monto })
+                });
+                const data = await response.json();
+
+                if (data.exito) {
+                    // Actualizar los textos de la pantalla verde
+                    document.getElementById('lbl-monto-exito').innerText = `Retiraste $${monto.toFixed(2)} de tu cuenta.`;
+                    document.getElementById('lbl-saldo-exito').innerText = `$${parseFloat(data.saldoRestante).toFixed(2)}`;
+                    
+                    navigate('view-success');
+                } else {
+                    alert(data.mensaje); // "Saldo insuficiente"
+                }
+            } catch (error) {
+                console.error("Error al retirar:", error);
+            }
         }
     </script>
 </body>
