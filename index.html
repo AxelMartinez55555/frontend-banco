@@ -28,16 +28,13 @@
         <div class="bg-white p-8 md:p-10 rounded-3xl shadow-xl">
             <p class="text-brand-orange text-xs font-bold tracking-widest mb-2">ACCESO A CLIENTES</p>
             <h2 class="text-3xl font-bold mb-2 text-brand-dark">Bienvenido de nuevo</h2>
-            <p class="text-gray-500 text-sm mb-8">Ingresa tus datos para consultar tu cuenta.</p>
+            <p class="text-gray-500 text-sm mb-8">Ingresa tu RFC para consultar tu cuenta.</p>
             
-            <div class="mb-5">
-                <label class="block text-sm font-bold mb-2 text-gray-700">RFC</label>
-                <input id="input-rfc" type="text" placeholder="Ej. GARC900101ABC" class="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-dark">
-            </div>
             <div class="mb-8">
-                <label class="block text-sm font-bold mb-2 text-gray-700">Contraseña</label>
-                <input id="input-pwd" type="password" placeholder="Ingresa tu contraseña" class="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-dark">
+                <label class="block text-sm font-bold mb-2 text-gray-700">RFC</label>
+                <input id="input-rfc" type="text" placeholder="Ej. JAP800101HDF" class="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-dark uppercase">
             </div>
+            
             <button onclick="hacerLogin()" class="w-full bg-brand-dark text-white p-4 rounded-xl font-bold hover:opacity-90 transition">Ingresar a mi cuenta ></button>
         </div>
     </div>
@@ -103,19 +100,17 @@
         let rfcUsuarioActual = "";
         let saldoUsuarioActual = 0;
 
-        // Función base para cambiar de pantallas
         function navigate(targetId) {
             document.querySelectorAll('body > div').forEach(el => el.classList.add('hidden'));
             document.getElementById(targetId).classList.remove('hidden');
         }
 
-        // 1. Enviar RFC y Contraseña a Java
+        // 1. Login usando solo el RFC
         async function hacerLogin() {
-            const rfc = document.getElementById('input-rfc').value;
-            const pwd = document.getElementById('input-pwd').value;
+            const rfc = document.getElementById('input-rfc').value.trim();
 
-            if (!rfc || !pwd) {
-                alert("Por favor ingresa tu RFC y contraseña.");
+            if (!rfc) {
+                alert("Por favor ingresa tu RFC.");
                 return;
             }
 
@@ -123,7 +118,7 @@
                 const response = await fetch('http://localhost:8080/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ rfc: rfc, password: pwd })
+                    body: JSON.stringify({ rfc: rfc })
                 });
                 const data = await response.json();
                 
@@ -131,14 +126,14 @@
                     rfcUsuarioActual = rfc;
                     cargarDashboard();
                 } else {
-                    alert(data.mensaje); // "RFC o contraseña incorrectos"
+                    alert(data.mensaje);
                 }
             } catch (error) {
-                alert("Error de conexión. Revisa que tu servidor Spring Boot esté encendido.");
+                alert("Error de conexión con el servidor Spring Boot.");
             }
         }
 
-        // 2. Traer los datos reales del usuario desde Java
+        // 2. Cargar dashboard con el saldo real
         async function cargarDashboard() {
             try {
                 const response = await fetch(`http://localhost:8080/api/usuario/${rfcUsuarioActual}`);
@@ -147,7 +142,6 @@
                 if (data.exito) {
                     saldoUsuarioActual = parseFloat(data.saldo);
                     
-                    // Actualizar los textos en pantalla
                     document.getElementById('lbl-nombre').innerText = `Hola, ${data.nombre}`;
                     document.getElementById('lbl-saldo-dash').innerText = `$${saldoUsuarioActual.toFixed(2)}`;
                     
@@ -158,14 +152,13 @@
             }
         }
 
-        // 3. Preparar la pantalla de retiro
         function irARetiro() {
             document.getElementById('lbl-saldo-ret').innerText = `$${saldoUsuarioActual.toFixed(2)}`;
-            document.getElementById('input-monto').value = ""; // Limpiar input
+            document.getElementById('input-monto').value = "";
             navigate('view-withdraw');
         }
 
-        // 4. Mandar la instrucción matemática a Java
+        // 3. Realizar retiro conectado a Atlas
         async function hacerRetiro() {
             const monto = parseFloat(document.getElementById('input-monto').value);
 
@@ -183,13 +176,12 @@
                 const data = await response.json();
 
                 if (data.exito) {
-                    // Actualizar los textos de la pantalla verde
                     document.getElementById('lbl-monto-exito').innerText = `Retiraste $${monto.toFixed(2)} de tu cuenta.`;
                     document.getElementById('lbl-saldo-exito').innerText = `$${parseFloat(data.saldoRestante).toFixed(2)}`;
                     
                     navigate('view-success');
                 } else {
-                    alert(data.mensaje); // "Saldo insuficiente"
+                    alert(data.mensaje);
                 }
             } catch (error) {
                 console.error("Error al retirar:", error);
