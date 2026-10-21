@@ -23,59 +23,133 @@
                 <span class="w-2 h-2 bg-brand-orange rounded-full"></span> Tu dinero, siempre cerca
             </span>
             <h1 class="text-5xl md:text-6xl font-extrabold mb-6 tracking-tight">Tus ahorros crecen<br>contigo.</h1>
-            <p class="text-gray-600 text-lg mb-12">Consulta tu saldo y administra tus retiros desde un espacio simple, claro y seguro.</p>
+            <p class="text-gray-600 text-lg mb-12">Consulta tu saldo y administra tus movimientos desde un espacio simple, claro y seguro.</p>
         </div>
         <div class="bg-white p-8 md:p-10 rounded-3xl shadow-xl">
             <p class="text-brand-orange text-xs font-bold tracking-widest mb-2">ACCESO A CLIENTES</p>
             <h2 class="text-3xl font-bold mb-2 text-brand-dark">Bienvenido de nuevo</h2>
             <p class="text-gray-500 text-sm mb-8">Ingresa tu RFC para consultar tu cuenta.</p>
             
-            <div class="mb-8">
+            <div class="mb-6">
                 <label class="block text-sm font-bold mb-2 text-gray-700">RFC</label>
                 <input id="input-rfc" type="text" placeholder="Ej. JAP800101HDF" class="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-dark uppercase">
             </div>
             
             <button onclick="hacerLogin()" class="w-full bg-brand-dark text-white p-4 rounded-xl font-bold hover:opacity-90 transition">Ingresar a mi cuenta ></button>
+            
+            <div class="mt-6 text-center">
+                <button onclick="navigate('view-create')" class="text-brand-orange text-sm font-bold hover:underline">¿No tienes cuenta? Crea una aquí</button>
+            </div>
         </div>
+    </div>
+
+    <!-- Vista 6: Crear Cuenta (Esquema Completo) -->
+    <div id="view-create" class="hidden w-full max-w-3xl bg-white p-8 md:p-10 rounded-3xl shadow-xl max-h-[95vh] overflow-y-auto">
+        <p class="text-brand-orange text-xs font-bold tracking-widest mb-2">NUEVO CLIENTE</p>
+        <h2 class="text-3xl font-bold mb-2 text-brand-dark">Abre tu cuenta</h2>
+        <p class="text-gray-500 text-sm mb-6">Completa tu información personal para registrarte en la base de datos.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div>
+                <label class="block text-xs font-bold mb-1 text-brand-dark">RFC *</label>
+                <input id="new-rfc" type="text" class="w-full p-3 border-2 border-gray-200 rounded-xl uppercase focus:border-brand-dark">
+            </div>
+            <div>
+                <label class="block text-xs font-bold mb-1 text-brand-dark">Tipo de Persona *</label>
+                <select id="new-tipo" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-dark bg-white">
+                    <option value="F">Física (F)</option>
+                    <option value="M">Moral (M)</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs font-bold mb-1 text-brand-dark">Nombre(s) *</label>
+                <input id="new-nombre" type="text" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-dark">
+            </div>
+            <div>
+                <label class="block text-xs font-bold mb-1 text-brand-dark">Apellidos *</label>
+                <input id="new-apellidos" type="text" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-dark">
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-xs font-bold mb-1 text-brand-dark">Calle y Número</label>
+                <input id="new-calle" type="text" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-dark">
+            </div>
+            <div>
+                <label class="block text-xs font-bold mb-1 text-brand-dark">Colonia</label>
+                <input id="new-colonia" type="text" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-dark">
+            </div>
+            <div>
+                <label class="block text-xs font-bold mb-1 text-brand-dark">Código Postal (CP)</label>
+                <input id="new-cp" type="text" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-dark">
+            </div>
+            <div>
+                <label class="block text-xs font-bold mb-1 text-brand-dark">Municipio</label>
+                <input id="new-municipio" type="text" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-dark">
+            </div>
+            <div>
+                <label class="block text-xs font-bold mb-1 text-brand-dark">Teléfono</label>
+                <input id="new-telefono" type="text" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-dark">
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-xs font-bold mb-1 text-brand-dark">Depósito inicial (MXN) *</label>
+                <input id="new-saldo" type="number" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-dark" placeholder="Monto mayor a 0">
+            </div>
+        </div>
+
+        <button onclick="crearCuenta()" class="w-full bg-brand-orange text-brand-dark p-4 rounded-xl font-bold hover:opacity-90 transition">Crear mi cuenta</button>
+        <button onclick="navigate('view-login')" class="w-full mt-4 text-gray-500 text-sm font-bold hover:underline">Cancelar y volver al inicio</button>
     </div>
 
     <!-- Vista 2: Dashboard -->
     <div id="view-dashboard" class="hidden w-full max-w-4xl">
-        <p class="text-gray-500 text-sm mb-1" id="fecha-actual">Miércoles, 21 de mayo</p>
-        <h2 id="lbl-nombre" class="text-3xl font-bold mb-6">Hola, Usuario</h2>
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <p class="text-gray-500 text-sm">Sesión activa</p>
+                <h2 id="lbl-nombre" class="text-3xl font-bold">Hola, Usuario</h2>
+            </div>
+            <button onclick="cerrarSesion()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-xl text-sm font-bold hover:bg-gray-300 transition">Cerrar sesión</button>
+        </div>
         
         <div class="bg-brand-dark text-white p-8 md:p-10 rounded-3xl mb-6 flex flex-col md:flex-row justify-between md:items-end relative overflow-hidden shadow-lg">
             <div class="relative z-10 mb-6 md:mb-0">
                 <p class="text-sm font-semibold opacity-80 mb-4 flex items-center gap-2">✓ Cuenta de ahorro</p>
                 <p class="text-xs tracking-widest opacity-80 mb-2">SALDO DISPONIBLE</p>
                 <p id="lbl-saldo-dash" class="text-5xl md:text-6xl font-bold mb-2">$0.00</p>
-                <p class="text-xs opacity-60">Última actualización: ahora</p>
             </div>
-            <button onclick="irARetiro()" class="relative z-10 bg-brand-orange text-brand-dark px-8 py-4 rounded-xl font-bold hover:opacity-90 transition">Retirar fondos ></button>
+            <div class="flex gap-4 relative z-10">
+                <button onclick="irADeposito()" class="bg-white text-brand-dark px-6 py-4 rounded-xl font-bold hover:opacity-90 transition">Depositar</button>
+                <button onclick="irARetiro()" class="bg-brand-orange text-brand-dark px-6 py-4 rounded-xl font-bold hover:opacity-90 transition">Retirar fondos ></button>
+            </div>
+        </div>
+
+        <!-- Botón para Eliminar Cuenta -->
+        <div class="mt-8 text-center">
+            <button onclick="eliminarCuenta()" class="text-red-500 text-sm font-bold hover:underline">Eliminar mi cuenta definitivamente</button>
         </div>
     </div>
 
     <!-- Vista 3: Retiro -->
     <div id="view-withdraw" class="hidden w-full max-w-lg bg-white p-8 md:p-10 rounded-3xl shadow-xl">
-        <p class="text-brand-orange text-xs font-bold tracking-widest mb-2">NUEVO RETIRO</p>
         <h2 class="text-3xl font-bold mb-2 text-brand-dark">¿Cuánto deseas retirar?</h2>
-        <p class="text-gray-500 text-sm mb-8">Revisa el monto antes de confirmar la operación.</p>
-        
-        <div class="bg-[#f6f5ef] p-4 rounded-xl mb-8 flex justify-between items-center text-sm">
-            <span class="text-gray-500">Saldo disponible</span>
-            <span id="lbl-saldo-ret" class="font-bold">$0.00</span>
-        </div>
-        
-        <div class="mb-8">
-            <label class="block text-sm font-bold mb-2 text-brand-dark">Monto a retirar</label>
+        <div class="mb-8 mt-6">
             <div class="relative">
                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-xl font-bold text-gray-500">$</span>
-                <input id="input-monto" type="number" placeholder="0" class="w-full p-4 pl-8 border-2 border-brand-dark rounded-xl text-xl font-bold focus:outline-none">
-                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-gray-400">MXN</span>
+                <input id="input-monto-ret" type="number" placeholder="0" class="w-full p-4 pl-8 border-2 border-brand-dark rounded-xl text-xl font-bold focus:outline-none">
             </div>
         </div>
-
         <button onclick="hacerRetiro()" class="w-full bg-brand-dark text-white p-4 rounded-xl font-bold hover:opacity-90 transition">Confirmar retiro</button>
+        <button onclick="cargarDashboard()" class="w-full mt-4 text-gray-500 text-sm font-bold hover:underline">Cancelar</button>
+    </div>
+
+    <!-- Vista 5: Depósito -->
+    <div id="view-deposit" class="hidden w-full max-w-lg bg-white p-8 md:p-10 rounded-3xl shadow-xl">
+        <h2 class="text-3xl font-bold mb-2 text-brand-dark">¿Cuánto deseas depositar?</h2>
+        <div class="mb-8 mt-6">
+            <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-xl font-bold text-gray-500">$</span>
+                <input id="input-monto-dep" type="number" placeholder="0" class="w-full p-4 pl-8 border-2 border-brand-dark rounded-xl text-xl font-bold focus:outline-none">
+            </div>
+        </div>
+        <button onclick="hacerDeposito()" class="w-full bg-brand-dark text-white p-4 rounded-xl font-bold hover:opacity-90 transition">Confirmar depósito</button>
         <button onclick="cargarDashboard()" class="w-full mt-4 text-gray-500 text-sm font-bold hover:underline">Cancelar</button>
     </div>
 
@@ -83,15 +157,10 @@
     <div id="view-success" class="hidden w-full max-w-md bg-brand-dark text-white rounded-3xl overflow-hidden shadow-2xl">
         <div class="p-10 text-center border-b border-white/10">
             <div class="w-16 h-16 bg-brand-orange rounded-full flex items-center justify-center mx-auto mb-6 text-brand-dark text-2xl font-bold">✓</div>
-            <p class="text-xs font-bold tracking-widest mb-2 opacity-80">OPERACIÓN COMPLETADA</p>
-            <h2 class="text-4xl font-bold mb-4">Retiro exitoso</h2>
-            <p id="lbl-monto-exito" class="opacity-80 font-light">Retiraste $0.00 de tu cuenta.</p>
+            <h2 id="lbl-titulo-exito" class="text-4xl font-bold mb-4">Operación exitosa</h2>
+            <p id="lbl-monto-exito" class="opacity-80 font-light">Movimiento realizado con éxito.</p>
         </div>
-        <div class="bg-white p-10">
-            <div class="bg-[#f6f5ef] p-6 rounded-2xl text-center mb-8 border border-gray-100">
-                <p class="text-xs font-bold text-gray-400 tracking-widest mb-2">SALDO ACTUALIZADO</p>
-                <p id="lbl-saldo-exito" class="text-4xl font-bold text-brand-dark">$0.00</p>
-            </div>
+        <div class="bg-white p-10 text-center">
             <button onclick="cargarDashboard()" class="w-full bg-brand-dark text-white p-4 rounded-xl font-bold hover:opacity-90 transition">Volver a mi cuenta ></button>
         </div>
     </div>
@@ -105,14 +174,9 @@
             document.getElementById(targetId).classList.remove('hidden');
         }
 
-        // 1. Login usando solo el RFC
         async function hacerLogin() {
             const rfc = document.getElementById('input-rfc').value.trim();
-
-            if (!rfc) {
-                alert("Por favor ingresa tu RFC.");
-                return;
-            }
+            if (!rfc) { alert("Ingresa tu RFC."); return; }
 
             try {
                 const response = await fetch('http://localhost:8080/api/login', {
@@ -121,52 +185,41 @@
                     body: JSON.stringify({ rfc: rfc })
                 });
                 const data = await response.json();
-                
                 if (data.exito) {
-                    rfcUsuarioActual = rfc;
+                    rfcUsuarioActual = data.rfc;
                     cargarDashboard();
                 } else {
                     alert(data.mensaje);
                 }
-            } catch (error) {
-                alert("Error de conexión con el servidor Spring Boot.");
-            }
+            } catch (error) { alert("Error de conexión con el servidor."); }
         }
 
-        // 2. Cargar dashboard con el saldo real
         async function cargarDashboard() {
             try {
                 const response = await fetch(`http://localhost:8080/api/usuario/${rfcUsuarioActual}`);
                 const data = await response.json();
-
                 if (data.exito) {
                     saldoUsuarioActual = parseFloat(data.saldo);
-                    
                     document.getElementById('lbl-nombre').innerText = `Hola, ${data.nombre}`;
                     document.getElementById('lbl-saldo-dash').innerText = `$${saldoUsuarioActual.toFixed(2)}`;
-                    
                     navigate('view-dashboard');
-                }
-            } catch (error) {
-                console.error("Error al cargar datos:", error);
-            }
+                } else { alert(data.mensaje); }
+            } catch (error) { console.error("Error:", error); }
         }
 
         function irARetiro() {
-            document.getElementById('lbl-saldo-ret').innerText = `$${saldoUsuarioActual.toFixed(2)}`;
-            document.getElementById('input-monto').value = "";
+            document.getElementById('input-monto-ret').value = "";
             navigate('view-withdraw');
         }
 
-        // 3. Realizar retiro conectado a Atlas
+        function irADeposito() {
+            document.getElementById('input-monto-dep').value = "";
+            navigate('view-deposit');
+        }
+
         async function hacerRetiro() {
-            const monto = parseFloat(document.getElementById('input-monto').value);
-
-            if (isNaN(monto) || monto <= 0) {
-                alert("Ingresa un monto válido.");
-                return;
-            }
-
+            const monto = parseFloat(document.getElementById('input-monto-ret').value);
+            if (isNaN(monto) || monto <= 0) { alert("Monto inválido."); return; }
             try {
                 const response = await fetch('http://localhost:8080/api/retirar', {
                     method: 'POST',
@@ -174,17 +227,103 @@
                     body: JSON.stringify({ rfc: rfcUsuarioActual, monto: monto })
                 });
                 const data = await response.json();
+                if (data.exito) {
+                    document.getElementById('lbl-titulo-exito').innerText = "Retiro exitoso";
+                    document.getElementById('lbl-monto-exito').innerText = `Retiraste $${monto.toFixed(2)}`;
+                    navigate('view-success');
+                } else { alert(data.mensaje); }
+            } catch (error) { alert("Error de red."); }
+        }
+
+        async function hacerDeposito() {
+            const monto = parseFloat(document.getElementById('input-monto-dep').value);
+            if (isNaN(monto) || monto <= 0) { alert("Monto inválido."); return; }
+            try {
+                const response = await fetch('http://localhost:8080/api/depositar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ rfc: rfcUsuarioActual, monto: monto })
+                });
+                const data = await response.json();
+                if (data.exito) {
+                    document.getElementById('lbl-titulo-exito').innerText = "Depósito exitoso";
+                    document.getElementById('lbl-monto-exito').innerText = `Depositaste $${monto.toFixed(2)}`;
+                    navigate('view-success');
+                } else { alert(data.mensaje); }
+            } catch (error) { alert("Error de red."); }
+        }
+
+        function cerrarSesion() {
+            rfcUsuarioActual = "";
+            saldoUsuarioActual = 0;
+            document.getElementById('input-rfc').value = "";
+            navigate('view-login');
+        }
+
+        // --- C DE CRUD: Registrar cliente completo ---
+        async function crearCuenta() {
+            const rfc = document.getElementById('new-rfc').value.trim();
+            const tipo = document.getElementById('new-tipo').value;
+            const nombre = document.getElementById('new-nombre').value.trim();
+            const apellidos = document.getElementById('new-apellidos').value.trim();
+            const calle_num = document.getElementById('new-calle').value.trim();
+            const colonia = document.getElementById('new-colonia').value.trim();
+            const cp = document.getElementById('new-cp').value.trim();
+            const municipio = document.getElementById('new-municipio').value.trim();
+            const telefono = document.getElementById('new-telefono').value.trim();
+            const saldo = parseFloat(document.getElementById('new-saldo').value);
+
+            if (!rfc || !nombre || !apellidos || isNaN(saldo) || saldo < 0) {
+                alert("Completa RFC, Nombre, Apellidos y el Saldo inicial para continuar.");
+                return;
+            }
+
+            const payload = {
+                rfc, tipo, nombre, apellidos, calle_num, colonia, cp, municipio, telefono, saldo
+            };
+
+            try {
+                const response = await fetch('http://localhost:8080/api/crear', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
 
                 if (data.exito) {
-                    document.getElementById('lbl-monto-exito').innerText = `Retiraste $${monto.toFixed(2)} de tu cuenta.`;
-                    document.getElementById('lbl-saldo-exito').innerText = `$${parseFloat(data.saldoRestante).toFixed(2)}`;
-                    
-                    navigate('view-success');
+                    alert("¡Cuenta creada exitosamente! Ya puedes iniciar sesión.");
+                    document.getElementById('input-rfc').value = rfc.toUpperCase();
+                    navigate('view-login');
                 } else {
                     alert(data.mensaje);
                 }
             } catch (error) {
-                console.error("Error al retirar:", error);
+                alert("Error al conectar con el servidor.");
+            }
+        }
+
+        // --- D DE CRUD: Eliminar cliente ---
+        async function eliminarCuenta() {
+            if (!confirm("¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.")) {
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:8080/api/eliminar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ rfc: rfcUsuarioActual })
+                });
+                const data = await response.json();
+
+                if (data.exito) {
+                    alert("Tu cuenta ha sido eliminada de nuestra base de datos.");
+                    cerrarSesion();
+                } else {
+                    alert(data.mensaje);
+                }
+            } catch (error) {
+                alert("Error al intentar eliminar la cuenta.");
             }
         }
     </script>
