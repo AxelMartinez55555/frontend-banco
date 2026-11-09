@@ -28,11 +28,16 @@
         <div class="bg-white p-8 md:p-10 rounded-3xl shadow-xl">
             <p class="text-brand-orange text-xs font-bold tracking-widest mb-2">ACCESO</p>
             <h2 class="text-3xl font-bold mb-2 text-brand-dark">Bienvenido de nuevo</h2>
-            <p class="text-gray-500 text-sm mb-8">Ingresa tu RFC para entrar al sistema.</p>
+            <p class="text-gray-500 text-sm mb-8">Ingresa tus credenciales para entrar al sistema.</p>
             
-            <div class="mb-6">
+            <div class="mb-4">
                 <label class="block text-sm font-bold mb-2 text-gray-700">RFC</label>
                 <input id="input-rfc" type="text" placeholder="Ej. JAP800101HDF" class="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-dark uppercase">
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-sm font-bold mb-2 text-gray-700">Contraseña</label>
+                <input id="input-password-login" type="password" placeholder="Ingresa tu contraseña" class="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-dark">
             </div>
             
             <button onclick="hacerLogin()" class="w-full bg-brand-dark text-white p-4 rounded-xl font-bold hover:opacity-90 transition">Ingresar al sistema</button>
@@ -128,6 +133,10 @@
                 <input id="new-apellidos" type="text" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-dark">
             </div>
             <div class="md:col-span-2">
+                <label class="block text-xs font-bold mb-1 text-brand-dark">Contraseña *</label>
+                <input id="new-password" type="password" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-dark" placeholder="Crea una contraseña segura">
+            </div>
+            <div class="md:col-span-2">
                 <label class="block text-xs font-bold mb-1 text-brand-dark">Calle y Número</label>
                 <input id="new-calle" type="text" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-dark">
             </div>
@@ -219,8 +228,10 @@
 
         async function hacerLogin() {
             const rfc = document.getElementById('input-rfc').value.trim();
-            if (!rfc) { 
-                alert("Ingresa tu RFC."); 
+            const password = document.getElementById('input-password-login').value;
+
+            if (!rfc || !password) { 
+                alert("Ingresa tu RFC y contraseña."); 
                 return; 
             }
 
@@ -228,7 +239,7 @@
                 const response = await fetch('https://banco-api-y8fn.onrender.com/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ rfc: rfc })
+                    body: JSON.stringify({ rfc: rfc, contra_cuenta: password })
                 });
                 const data = await response.json();
                 
@@ -442,9 +453,10 @@
             const municipio = document.getElementById('new-municipio').value.trim();
             const telefono = document.getElementById('new-telefono').value.trim();
             const saldo = parseFloat(document.getElementById('new-saldo').value);
+            const password = document.getElementById('new-password').value;
 
-            if (!rfc || !nombre || !apellidos || isNaN(saldo) || saldo < 0) {
-                alert("Completa RFC, Nombre, Apellidos y el Saldo inicial."); 
+            if (!rfc || !nombre || !apellidos || isNaN(saldo) || saldo < 0 || !password) {
+                alert("Completa todos los campos obligatorios, incluyendo la contraseña y el saldo inicial."); 
                 return;
             }
             
@@ -458,7 +470,8 @@
                 cp: cp,
                 municipio: municipio,
                 telefono: telefono,
-                saldo: saldo
+                saldo: saldo,
+                contra_cuenta: password
             };
 
             try {
@@ -494,6 +507,7 @@
             rolUsuarioActual = "";
             rfcOperacion = "";
             document.getElementById('input-rfc').value = "";
+            document.getElementById('input-password-login').value = "";
             navigate('view-login');
         }
     </script>
